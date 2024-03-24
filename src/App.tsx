@@ -1,8 +1,14 @@
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+
 const App = () => {
   return (
-    <div>
-      <h1 className="text-4xl font-mono font-black">Hello world</h1>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<div>Home</div>} />
+        <Route path="/login" element={<div>login</div>} />
+        <Route path="/register" element={<div>register</div>} />
+      </Routes>
+    </BrowserRouter>
   )
 }
 
