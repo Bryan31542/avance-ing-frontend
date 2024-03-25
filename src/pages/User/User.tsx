@@ -13,7 +13,7 @@ const User = () => {
   }, [fetchUsers, currentPage])
 
   const handleNext = () => {
-    if (users.length < 5) {
+    if (users.length <= 5) {
       return
     }
 
@@ -27,8 +27,6 @@ const User = () => {
 
     setCurrentPage(currentPage - 1)
   }
-
-  console.log(users[0].role.name)
 
   return (
     <div className="flex flex-col items-center justify-center w-screen h-screen">
@@ -44,6 +42,7 @@ const User = () => {
       {users.map((user: any) => (
         <UserCard
           key={user.id}
+          id={user.id}
           name={user.name}
           email={user.email}
           role={user.role.name}

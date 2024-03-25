@@ -1,14 +1,19 @@
 import { Link } from 'react-router-dom'
+import { useUserStore } from '../../store/user.store'
 
 const UserCard = ({
+  id,
   name,
   email,
   role
 }: {
+  id: string
   name: string
   email: string
   role: string
 }) => {
+  const { deleteUser } = useUserStore()
+
   return (
     <div className="flex items-center justify-center w-max mx-auto mb-6 px-20 h-20 bg-white rounded-full gap-20 drop-shadow-card">
       <div className="flex items-center justify-center gap-10">
@@ -26,11 +31,12 @@ const UserCard = ({
             Edit
           </button>
         </Link>
-        <Link to={`/edit`}>
-          <button className="rounded-full bg-red-500 w-32 h-10 text-white font-bold">
-            Delete
-          </button>
-        </Link>
+        <button
+          className="rounded-full bg-red-500 w-32 h-10 text-white font-bold"
+          onClick={() => deleteUser(id)}
+        >
+          Delete
+        </button>
       </div>
     </div>
   )

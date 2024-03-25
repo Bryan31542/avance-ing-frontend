@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { addUser, getAllUsers } from '../api/user'
+import { addUser, deleteUser, getAllUsers } from '../api/user'
 
 export const useUserStore = create<UserState>(set => ({
   users: [],
@@ -13,16 +13,29 @@ export const useUserStore = create<UserState>(set => ({
   },
   createUser: async (data: any) => {
     try {
-      const res = await addUser(data)
-      console.log(res)
+      await addUser(data)
     } catch (error) {
       console.error('Failed to create user: ', error)
+    }
+  },
+  deleteUser: async (id: string) => {
+    try {
+      await deleteUser(id)
+      set((state: UserState) => {
+        return {
+          ...state,
+          users: state.users.filter((user: any) => user.id !== id)
+        }
+      })
+    } catch (error) {
+      console.error('Failed to delete user: ', error)
     }
   }
 }))
 
 interface UserState {
-  users: []
+  users: any[]
   fetchUsers: (page: number, pageSize: number) => Promise<void>
   createUser: (data: any) => Promise<void>
+  deleteUser: (id: string) => Promise<void>
 }

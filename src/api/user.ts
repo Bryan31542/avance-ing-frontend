@@ -9,3 +9,5 @@ export const getAllUsers = async (page: number, pageSize: number) =>
   })
 
 export const addUser = async (data: any) => axios.post('/users', data)
+
+export const deleteUser = async (id: string) => axios.delete(`/users/${id}`)
