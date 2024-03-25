@@ -1,11 +1,11 @@
 import { create } from 'zustand'
 import { getAllUsers } from '../api/user'
 
-export const useUserStore = create<UserState>((set, get) => ({
+export const useUserStore = create<UserState>(set => ({
   users: [],
-  fetchUsers: async () => {
+  fetchUsers: async (page: number, pageSize: number) => {
     try {
-      const res = await getAllUsers()
+      const res = await getAllUsers(page, pageSize)
       set({ users: res.data })
     } catch (error) {
       console.error('Failed to fetch users: ', error)
@@ -15,5 +15,5 @@ export const useUserStore = create<UserState>((set, get) => ({
 
 interface UserState {
   users: []
-  fetchUsers: () => Promise<void>
+  fetchUsers: (page: number, pageSize: number) => Promise<void>
 }

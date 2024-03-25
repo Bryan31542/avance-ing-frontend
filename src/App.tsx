@@ -14,11 +14,12 @@ const App = () => {
       <main className="h-screen w-screen flex items-stretch ">
         {isLogged && <Sidebar />}
         <Routes>
-          <Route path="/" element={<h1>Home</h1>} />
+          <Route path="/" element={<Login />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route element={<ProtectedRoute />}>
             <Route path="/users" element={<User />} />
+            <Route path="/users/add" element={<Register />} />
             <Route path="/roles" element={<Role />} />
           </Route>
         </Routes>

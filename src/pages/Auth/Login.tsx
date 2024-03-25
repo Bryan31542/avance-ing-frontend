@@ -38,7 +38,6 @@ const Login = () => {
           placeholder="Username"
           {...register('username', { required: true })}
         />
-
         <label className="text-white font-bold">Password</label>
         <input
           className="w-full bg-zinc-600 text-white px-4 py-2 rounded-md my-2"
@@ -46,7 +45,6 @@ const Login = () => {
           placeholder="Password"
           {...register('password', { required: true })}
         />
-
         <button
           type="submit"
           className="bg-purple-700 text-white font-bold py-2 px-4 rounded w-full mt-6 transition-all duration-1000 ease-in-out hover:bg-purple-500"
