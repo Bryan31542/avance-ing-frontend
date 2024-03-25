@@ -7,12 +7,15 @@ import { ProtectedRoute } from './routes/ProtectedRoute'
 import { useAuthStore } from './store/auth.store'
 import Role from './pages/Role/Role'
 import RoleForm from './pages/Role/RoleForm'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 const App = () => {
   const { isLogged } = useAuthStore()
   return (
     <BrowserRouter>
       <main className="h-screen w-screen flex items-stretch ">
+        <ToastContainer />
         {isLogged && <Sidebar />}
         <Routes>
           <Route path="/" element={<Login />} />
