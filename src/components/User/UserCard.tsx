@@ -26,7 +26,7 @@ const UserCard = ({
         <p className="text-lg font-bold text-black font-dm-sans w-40 text-center">
           {role}
         </p>
-        <Link to={`/edit`}>
+        <Link to={`/users/edit/${id}`}>
           <button className="rounded-full bg-blue-500 w-32 h-10 text-white font-bold">
             Edit
           </button>

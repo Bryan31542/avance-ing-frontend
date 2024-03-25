@@ -20,6 +20,7 @@ const App = () => {
           <Route element={<ProtectedRoute />}>
             <Route path="/users" element={<User />} />
             <Route path="/users/add" element={<UserForm />} />
+            <Route path="/users/edit/:id" element={<UserForm />} />
             <Route path="/roles" element={<Role />} />
             <Route path="/roles/add" element={<RoleForm />} />
           </Route>

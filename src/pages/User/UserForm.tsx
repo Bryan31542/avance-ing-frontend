@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form'
 import { useRoleStore } from '../../store/role.store'
 import { useUserStore } from '../../store/user.store'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 const Register = () => {
   const { register, handleSubmit } = useForm()
@@ -9,6 +9,7 @@ const Register = () => {
   const { roles } = useRoleStore()
   const { createUser } = useUserStore()
   const navigate = useNavigate()
+  const params = useParams()
 
   const onSubmit = handleSubmit(async values => {
     try {
@@ -21,7 +22,7 @@ const Register = () => {
   return (
     <div className="bg-zinc-900 max-w-xl p-10 rounded-2xl m-auto">
       <h1 className="text-3xl text-white font-bold mb-10 text-center">
-        Add User
+        {params.id ? 'Edit User' : 'Add User'}
       </h1>
       <form onSubmit={onSubmit} autoComplete="off">
         <label className="text-white font-bold">Name</label>
