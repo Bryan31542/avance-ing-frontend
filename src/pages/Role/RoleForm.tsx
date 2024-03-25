@@ -1,10 +1,20 @@
 import { useForm } from 'react-hook-form'
+import { useRoleStore } from '../../store/role.store'
+import { useNavigate } from 'react-router-dom'
 
 const RoleForm = () => {
   const { register, handleSubmit } = useForm()
+  const { createRole, fetchRoles } = useRoleStore()
+  const navigate = useNavigate()
 
   const onSubmit = handleSubmit(async values => {
-    console.log(values)
+    try {
+      await createRole(values.name)
+      fetchRoles()
+      navigate('/roles')
+    } catch (error) {
+      console.error('Failed to add role: ', error)
+    }
   })
 
   return (

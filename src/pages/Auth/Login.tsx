@@ -6,9 +6,7 @@ import { useEffect } from 'react'
 const Login = () => {
   const { register, handleSubmit } = useForm()
 
-  const { login, isLogged, user, checkAuth } = useAuthStore()
-  console.log(isLogged)
-  console.log(user)
+  const { login, isLogged, checkAuth } = useAuthStore()
   const navigate = useNavigate()
 
   useEffect(() => {
