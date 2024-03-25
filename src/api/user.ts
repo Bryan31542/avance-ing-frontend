@@ -7,3 +7,5 @@ export const getAllUsers = async (page: number, pageSize: number) =>
       pageSize
     }
   })
+
+export const addUser = async (data: any) => axios.post('/users', data)

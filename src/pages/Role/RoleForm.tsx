@@ -4,13 +4,12 @@ import { useNavigate } from 'react-router-dom'
 
 const RoleForm = () => {
   const { register, handleSubmit } = useForm()
-  const { createRole, fetchRoles } = useRoleStore()
+  const { createRole } = useRoleStore()
   const navigate = useNavigate()
 
   const onSubmit = handleSubmit(async values => {
     try {
       await createRole(values.name)
-      fetchRoles()
       navigate('/roles')
     } catch (error) {
       console.error('Failed to add role: ', error)

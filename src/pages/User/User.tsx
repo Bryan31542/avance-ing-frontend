@@ -28,6 +28,8 @@ const User = () => {
     setCurrentPage(currentPage - 1)
   }
 
+  console.log(users[0].role.name)
+
   return (
     <div className="flex flex-col items-center justify-center w-screen h-screen">
       <div className="absolute top-10 w-fit flex justify-center items-center gap-24">
@@ -44,7 +46,7 @@ const User = () => {
           key={user.id}
           name={user.name}
           email={user.email}
-          role="Admin"
+          role={user.role.name}
         />
       ))}
 
