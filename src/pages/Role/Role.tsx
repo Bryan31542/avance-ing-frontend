@@ -21,23 +21,10 @@ const Role = () => {
         </Link>
       </div>
 
-      {roles.map((role: any) => (
-        <RoleCard key={role.id} name={role.name} />
-      ))}
-
-      <div className="absolute bottom-10 flex justify-evenly gap-72 w-auto">
-        <button
-          className="bg-zinc-500 text-white font-bold rounded-full w-32 h-10"
-          //onClick={handlePrevious}
-        >
-          Previous
-        </button>
-        <button
-          className="bg-zinc-500 text-white font-bold rounded-full w-32 h-10"
-          // onClick={handleNext}
-        >
-          Next
-        </button>
+      <div className="flex flex-wrap justify-center gap-4">
+        {roles.map((role: any) => (
+          <RoleCard key={role.id} name={role.name} />
+        ))}
       </div>
     </div>
   )
