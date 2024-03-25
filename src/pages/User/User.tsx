@@ -31,7 +31,7 @@ const User = () => {
   return (
     <div className="flex flex-col items-center justify-center w-screen h-screen">
       <div className="absolute top-10 w-fit flex justify-center items-center gap-24">
-        <h1 className="text-4xl">Users</h1>
+        <h1 className="text-4xl font-bold">Users</h1>
         <Link to="/users/add">
           <button className="rounded-full bg-purple-500 w-32 h-10 text-white font-bold">
             Add User
