@@ -21,7 +21,6 @@ const Login = () => {
   }, [isLogged, navigate, checkAuth])
 
   const onSubmit = handleSubmit(async values => {
-    console.log(values)
     try {
       await login(values.username, values.password)
     } catch (error) {
