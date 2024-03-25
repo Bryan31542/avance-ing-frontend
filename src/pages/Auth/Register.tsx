@@ -2,9 +2,15 @@ import { useForm } from 'react-hook-form'
 
 const Register = () => {
   const { register, handleSubmit } = useForm()
+
+  const onSubmit = handleSubmit(async values => {
+    console.log(values)
+    // const res = await registerRequest(values)
+    // console.log(res)
+  })
   return (
-    <div className="bg-zinc-900 max-w-md p-10 rounded-md">
-      <form onSubmit={handleSubmit(values => console.log(values))}>
+    <div className="bg-zinc-900 max-w-md flex justify-center items-center p-10 rounded-md m-auto">
+      <form onSubmit={onSubmit}>
         <input
           className="w-full bg-zinc-600 text-white px-4 py-2 rounded-md my-2"
           type="text"
