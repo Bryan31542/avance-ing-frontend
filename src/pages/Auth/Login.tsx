@@ -1,7 +1,8 @@
-import { useForm } from 'react-hook-form'
+import { FieldValues, useForm } from 'react-hook-form'
 import { useAuthStore } from '../../store/auth.store'
 import { useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
+import { Auth } from '../../interfaces/auth.interface'
 
 const Login = () => {
   const {
@@ -20,9 +21,9 @@ const Login = () => {
     }
   }, [isLogged, navigate, checkAuth])
 
-  const onSubmit = handleSubmit(async values => {
+  const onSubmit = handleSubmit(async (values: FieldValues) => {
     try {
-      await login(values.username, values.password)
+      await login(values as Auth)
     } catch (error) {
       console.error('Login failed: ', error)
     }

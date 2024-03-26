@@ -2,12 +2,13 @@ import { create } from 'zustand'
 import { loginRequest, logoutRequest, verifyToken } from '../api/auth'
 import Cookie from 'js-cookie'
 import { toast } from 'react-toastify'
+import { Auth } from '../interfaces/auth.interface'
 
 interface AuthState {
   isLogged: boolean
   user: string
   token: string
-  login: (username: string, password: string) => Promise<void>
+  login: (data: Auth) => Promise<void>
   checkAuth: () => void
   logout: () => void
 }
@@ -16,9 +17,10 @@ export const useAuthStore = create<AuthState>(set => ({
   isLogged: false,
   token: Cookie.get('token') || '',
   user: '',
-  login: async (username, password) => {
+  login: async (data: Auth) => {
     try {
-      const res = await loginRequest({ username, password })
+      console.log(data)
+      const res = await loginRequest(data)
       const { token, ...userData } = res.data
       toast.success('Logged in successfully')
       set({ isLogged: true, user: userData.id, token }) // Set token and user data in the store
