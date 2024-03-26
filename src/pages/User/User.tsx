@@ -19,7 +19,7 @@ const User = () => {
   useEffect(() => {
     fetchUsers(1, 100)
     fetchRoles()
-  }, [fetchUsers, fetchRoles, selectedRole, selectedUserId, isModalVisible])
+  }, [fetchUsers, fetchRoles, selectedRole, isModalVisible])
 
   const showModal = () => {
     setIsModalVisible(true)
@@ -65,7 +65,7 @@ const User = () => {
               className="flex gap-2 bg-slate-400 items-center rounded-md p-2"
             >
               <p key={index} className="font-bold text-white font-dm-sans">
-                {role.name}
+                {role?.name}
               </p>
               <button
                 className="text-white font-bold"
