@@ -71,8 +71,6 @@ const User = () => {
                 className="text-white font-bold"
                 onClick={() => {
                   removeRoleFromUser(record.key.toString(), role.id.toString())
-                  console.log(record.key)
-                  console.log(role.id)
                 }}
               >
                 <BackspaceIcon className="h-4 w-4 text-white" />

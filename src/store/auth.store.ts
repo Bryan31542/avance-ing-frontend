@@ -19,7 +19,6 @@ export const useAuthStore = create<AuthState>(set => ({
   user: '',
   login: async (data: Auth) => {
     try {
-      console.log(data)
       const res = await loginRequest(data)
       const { token, ...userData } = res.data
       toast.success('Logged in successfully')
@@ -40,7 +39,6 @@ export const useAuthStore = create<AuthState>(set => ({
   },
   logout: async () => {
     const response = await logoutRequest()
-    console.log(response)
     if (response.status === 200) {
       set({ isLogged: false, user: '' })
     }
