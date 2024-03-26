@@ -16,3 +16,6 @@ export const putUser = async (id: string, data: any) =>
   axios.put(`/users/${id}`, data)
 
 export const deleteUser = async (id: string) => axios.delete(`/users/${id}`)
+
+export const deleteRoleToUser = async (userId: string, roleId: string) =>
+  axios.delete(`/users/${userId}/roles/${roleId}`)

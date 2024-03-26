@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form'
 import { useRoleStore } from '../../store/role.store'
 import { useUserStore } from '../../store/user.store'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 const Register = () => {
   const {
@@ -14,41 +14,63 @@ const Register = () => {
 
   const { roles, fetchRoles } = useRoleStore()
   const { createUser, fetchUser, updateUser } = useUserStore()
-  const navigate = useNavigate()
-  const params = useParams()
 
-  console.log(errors)
+  const params = useParams()
+  const navigate = useNavigate()
 
   useEffect(() => {
     const getUser = async () => {
       const res = await fetchUser(params.id || '')
+      console.log('res', res)
       if ((res as any) !== null) {
         setValue('name', (res as any).name)
         setValue('username', (res as any).username)
         setValue('email', (res as any).email)
-        setValue('roleId', (res as any).role.id)
+        setSelectedRoles((res as any).roles.map((role: any) => role.id))
       }
     }
-
     fetchRoles()
-
     if (params.id) {
       getUser()
     }
   }, [params.id, fetchUser, setValue, fetchRoles])
 
   const onSubmit = handleSubmit(async values => {
+    console.log('values', values)
+    // Convert the selected roles array to the required format
+    const rolesArray = selectedRoles.map(roleId => ({ id: roleId }))
+    const formattedValues = {
+      ...values,
+      roles: rolesArray
+    }
     try {
       if (params.id) {
-        await updateUser(params.id, values)
+        await updateUser(params.id, formattedValues)
       } else {
-        await createUser(values)
+        await createUser(formattedValues)
       }
       navigate('/users')
     } catch (error) {
       console.error('Failed to add user: ', error)
     }
   })
+
+  const [selectedRoles, setSelectedRoles] = useState<string[]>([])
+
+  // State to store selected roles
+  const handleAddRole = (event: any) => {
+    const roleId = event.target.value
+    // Check if the role is not already selected
+    if (!selectedRoles.includes(roleId)) {
+      setSelectedRoles([...selectedRoles, roleId])
+    }
+  }
+
+  // Function to handle removing a role from selectedRoles
+  const handleRemoveRole = (roleIdToRemove: string) => {
+    setSelectedRoles(selectedRoles.filter(roleId => roleId !== roleIdToRemove))
+  }
+
   return (
     <div className="bg-zinc-900 w-2/5 p-10 rounded-2xl m-auto">
       <h1 className="text-3xl text-white font-bold mb-2 text-center">
@@ -102,8 +124,8 @@ const Register = () => {
 
         <label className="text-white font-bold">Role</label>
         <select
+          onChange={handleAddRole}
           className="w-full bg-zinc-600 text-white px-4 py-2 rounded-md my-2"
-          {...register('roleId', { required: '* Role is required' })}
         >
           <option value="">Select Role</option>
           {roles.map((role: any) => (
@@ -112,8 +134,25 @@ const Register = () => {
             </option>
           ))}
         </select>
-        {errors.roleId && typeof errors.roleId.message === 'string' && (
-          <p className="text-sm text-red-200 mb-2">{errors.roleId.message}</p>
+
+        {/* Display selected roles */}
+        <div>
+          <h2 className="my-2">Selected Roles:</h2>
+          <ul>
+            {selectedRoles.map((roleId: any) => (
+              <li key={roleId}>
+                {(roles.find((role: any) => role.id === roleId) as any)?.name}
+                {/* Display role name */}
+                <button onClick={() => handleRemoveRole(roleId)}>
+                  <p className="text-red-200 ml-4">Remove</p>
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {selectedRoles.length === 0 && (
+          <p className="text-sm text-red-200 mb-2">* Role is required</p>
         )}
         <button
           type="submit"

@@ -1,5 +1,12 @@
 import { create } from 'zustand'
-import { addUser, deleteUser, getAllUsers, getUser, putUser } from '../api/user'
+import {
+  addUser,
+  deleteRoleToUser,
+  deleteUser,
+  getAllUsers,
+  getUser,
+  putUser
+} from '../api/user'
 import { toast } from 'react-toastify'
 
 export const useUserStore = create<UserState>(set => ({
@@ -61,6 +68,29 @@ export const useUserStore = create<UserState>(set => ({
     } catch (error) {
       console.error('Failed to delete user: ', error)
     }
+  },
+  removeRoleFromUser: async (userId: string, roleId: string) => {
+    try {
+      await deleteRoleToUser(userId, roleId)
+      set((state: UserState) => {
+        return {
+          ...state,
+          users: state.users.map((user: any) => {
+            if (user.id === userId) {
+              return {
+                ...user,
+                roles: user.roles.filter((role: any) => role.id !== roleId)
+              }
+            }
+            return user
+          })
+        }
+      })
+
+      toast.success('Role removed from user successfully')
+    } catch (error) {
+      console.error('Failed to remove role from user: ', error)
+    }
   }
 }))
 
@@ -71,4 +101,5 @@ interface UserState {
   fetchUser: (id: string) => Promise<void>
   updateUser: (id: string, data: any) => Promise<void>
   deleteUser: (id: string) => Promise<void>
+  removeRoleFromUser: (userId: string, roleId: string) => Promise<void>
 }

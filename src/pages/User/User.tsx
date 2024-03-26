@@ -1,32 +1,86 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useUserStore } from '../../store/user.store'
-import UserCard from '../../components/User/UserCard'
 import { Link } from 'react-router-dom'
+import { Table } from 'antd'
 
 const User = () => {
-  const { users, fetchUsers } = useUserStore()
-
-  const [currentPage, setCurrentPage] = useState(1)
+  const { users, fetchUsers, deleteUser, removeRoleFromUser } = useUserStore()
 
   useEffect(() => {
-    fetchUsers(currentPage, 5)
-  }, [fetchUsers, currentPage])
+    fetchUsers(1, 100)
+  }, [fetchUsers])
 
-  const handleNext = () => {
-    if (users.length <= 5) {
-      return
+  const data = users.map(user => {
+    return {
+      key: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.roles
     }
+  })
 
-    setCurrentPage(currentPage + 1)
-  }
-
-  const handlePrevious = () => {
-    if (currentPage === 1) {
-      return
+  const columns = [
+    {
+      title: 'Name',
+      dataIndex: 'name',
+      key: 'name'
+    },
+    {
+      title: 'Email',
+      dataIndex: 'email',
+      key: 'email'
+    },
+    {
+      title: 'Roles',
+      key: 'roles',
+      render: (_: any, record: any) => (
+        console.log(record),
+        (
+          <div className="flex flex-wrap gap-2 w-2/3 justify-start items-center">
+            {record.role.map((role: any, index: number) => (
+              <div
+                key={index}
+                className="flex gap-2 bg-sky-200 items-center rounded-md p-2"
+              >
+                <p key={index} className="font-bold text-black font-dm-sans">
+                  {role.name}
+                </p>
+                <button
+                  className="text-white font-bold"
+                  onClick={() => {
+                    removeRoleFromUser(record.key, role.id)
+                    console.log(record.key)
+                    console.log(role.id)
+                  }}
+                >
+                  X
+                </button>
+              </div>
+            ))}
+          </div>
+        )
+      )
+    },
+    {
+      title: 'Action',
+      key: 'action',
+      render: (_: any, record: any) => (
+        <div className="flex gap-4">
+          <Link to={`/users/edit/${record.key}`}>
+            <button className="rounded-full bg-blue-500 w-24 h-10 text-white font-bold">
+              Edit
+            </button>
+          </Link>
+          <button
+            className="rounded-full bg-red-500 w-24 h-10 text-white font-bold"
+            onClick={() => deleteUser(record.key)}
+          >
+            Delete
+          </button>
+        </div>
+      )
     }
-
-    setCurrentPage(currentPage - 1)
-  }
+  ]
 
   return (
     <div className="flex flex-col items-center justify-center w-screen h-screen">
@@ -39,29 +93,15 @@ const User = () => {
         </Link>
       </div>
 
-      {users.map((user: any) => (
-        <UserCard
-          key={user.id}
-          id={user.id}
-          name={user.name}
-          email={user.email}
-          role={user.role.name}
+      <div className="w-full text-center-center rounded-md px-10">
+        <Table
+          dataSource={data}
+          columns={columns}
+          pagination={{
+            className: 'text-white',
+            pageSize: 5
+          }}
         />
-      ))}
-
-      <div className="absolute bottom-10 flex justify-evenly gap-96 w-auto">
-        <button
-          className="bg-zinc-500 text-white font-bold rounded-full w-32 h-10"
-          onClick={handlePrevious}
-        >
-          Previous
-        </button>
-        <button
-          className="bg-zinc-500 text-white font-bold rounded-full w-32 h-10"
-          onClick={handleNext}
-        >
-          Next
-        </button>
       </div>
     </div>
   )
