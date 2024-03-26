@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import {
+  addRoleToUser,
   addUser,
   deleteRoleToUser,
   deleteUser,
@@ -69,6 +70,30 @@ export const useUserStore = create<UserState>(set => ({
       console.error('Failed to delete user: ', error)
     }
   },
+
+  addRoleUser: async (userId: string, roleId: string) => {
+    try {
+      await addRoleToUser(userId, roleId)
+      set((state: UserState) => {
+        return {
+          ...state,
+          users: state.users.map((user: any) => {
+            if (user.id === userId) {
+              return {
+                ...user,
+                roles: [...user.roles, { id: roleId }]
+              }
+            }
+            return user
+          })
+        }
+      })
+
+      toast.success('Role added to user successfully')
+    } catch (error) {
+      console.error('Failed to add role to user: ', error)
+    }
+  },
   removeRoleFromUser: async (userId: string, roleId: string) => {
     try {
       await deleteRoleToUser(userId, roleId)
@@ -102,4 +127,5 @@ interface UserState {
   updateUser: (id: string, data: any) => Promise<void>
   deleteUser: (id: string) => Promise<void>
   removeRoleFromUser: (userId: string, roleId: string) => Promise<void>
+  addRoleUser: (userId: string, roleId: string) => Promise<void>
 }

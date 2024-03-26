@@ -1,14 +1,37 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useUserStore } from '../../store/user.store'
 import { Link } from 'react-router-dom'
-import { Table } from 'antd'
+import { Modal, Table } from 'antd'
+import { useRoleStore } from '../../store/role.store'
+import { PencilSquareIcon, BackspaceIcon } from '@heroicons/react/24/outline'
 
 const User = () => {
-  const { users, fetchUsers, deleteUser, removeRoleFromUser } = useUserStore()
+  const { users, fetchUsers, deleteUser, removeRoleFromUser, addRoleUser } =
+    useUserStore()
+  const { roles, fetchRoles } = useRoleStore()
+  const [isModalVisible, setIsModalVisible] = useState(false)
+  const [selectedRole, setSelectedRole] = useState(null)
+  const [selectedUserId, setSelectedUserId] = useState(null)
 
   useEffect(() => {
     fetchUsers(1, 100)
-  }, [fetchUsers])
+    fetchRoles()
+  }, [fetchUsers, fetchRoles, selectedRole, selectedUserId, isModalVisible])
+
+  const showModal = () => {
+    setIsModalVisible(true)
+  }
+
+  const handleOk = () => {
+    setIsModalVisible(false)
+    console.log('Selected Role:', selectedRole)
+    console.log('Selected User:', selectedUserId)
+    addRoleUser(selectedUserId ?? '', selectedRole ?? '')
+  }
+
+  const handleCancel = () => {
+    setIsModalVisible(false)
+  }
 
   const data = users.map(user => {
     return {
@@ -34,31 +57,40 @@ const User = () => {
       title: 'Roles',
       key: 'roles',
       render: (_: any, record: any) => (
-        console.log(record),
-        (
-          <div className="flex flex-wrap gap-2 w-2/3 justify-start items-center">
-            {record.role.map((role: any, index: number) => (
-              <div
-                key={index}
-                className="flex gap-2 bg-sky-200 items-center rounded-md p-2"
+        <div className="flex flex-wrap gap-2 w-2/3 justify-start items-center">
+          {record.role.map((role: any, index: number) => (
+            <div
+              key={index}
+              className="flex gap-2 bg-slate-400 items-center rounded-md p-2"
+            >
+              <p key={index} className="font-bold text-white font-dm-sans">
+                {role.name}
+              </p>
+              <button
+                className="text-white font-bold"
+                onClick={() => {
+                  removeRoleFromUser(record.key, role.id)
+                  console.log(record.key)
+                  console.log(role.id)
+                }}
               >
-                <p key={index} className="font-bold text-black font-dm-sans">
-                  {role.name}
-                </p>
-                <button
-                  className="text-white font-bold"
-                  onClick={() => {
-                    removeRoleFromUser(record.key, role.id)
-                    console.log(record.key)
-                    console.log(role.id)
-                  }}
-                >
-                  X
-                </button>
-              </div>
-            ))}
+                <BackspaceIcon className="h-4 w-4 text-white" />
+              </button>
+            </div>
+          ))}
+          {/* Dropdown menu */}
+          <div className="relative flex justify-center items-center">
+            <button
+              className="text-black font-bold"
+              onClick={() => {
+                showModal()
+                setSelectedUserId(record.key)
+              }}
+            >
+              <PencilSquareIcon className="h-5 w-5 text-blue-500" />
+            </button>
           </div>
-        )
+        </div>
       )
     },
     {
@@ -103,6 +135,27 @@ const User = () => {
           }}
         />
       </div>
+      <Modal
+        title="Select Role"
+        open={isModalVisible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
+        <div>
+          <select
+            onChange={(e: any) => setSelectedRole(e.target.value)}
+            value={selectedRole || ''}
+            className="w-full border text-black px-4 py-2 rounded-md my-2"
+          >
+            <option value="">Select Role</option>
+            {roles.map((role: any) => (
+              <option key={role.id} value={role.id}>
+                {role.name}
+              </option>
+            ))}
+          </select>
+        </div>
+      </Modal>
     </div>
   )
 }

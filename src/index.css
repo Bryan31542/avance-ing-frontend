@@ -51,3 +51,31 @@ body {
   background-color: #242424;
   border-color: white;
 }
+
+:where(.css-dev-only-do-not-override-42nv3w).ant-btn-primary {
+  background-color: #242424;
+  border-color: #242424;
+  color: white;
+}
+
+:where(.css-dev-only-do-not-override-42nv3w).ant-btn-primary {
+  background-color: #242424;
+  border-color: #242424;
+  color: white;
+}
+
+:where(.css-dev-only-do-not-override-42nv3w).ant-btn-primary:not(:disabled):not(
+    .ant-btn-disabled
+  ):hover {
+  background-color: #ffffff;
+  border-color: #242424;
+  color: #242424;
+}
+
+:where(.css-dev-only-do-not-override-42nv3w).ant-btn-default:not(:disabled):not(
+    .ant-btn-disabled
+  ):hover {
+  background-color: #ffffff;
+  border-color: #242424;
+  color: #242424;
+}

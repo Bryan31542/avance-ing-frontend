@@ -21,7 +21,6 @@ const Register = () => {
   useEffect(() => {
     const getUser = async () => {
       const res = await fetchUser(params.id || '')
-      console.log('res', res)
       if ((res as any) !== null) {
         setValue('name', (res as any).name)
         setValue('username', (res as any).username)
@@ -166,7 +165,6 @@ const Register = () => {
         >
           <button
             className="bg-red-700 text-white font-bold py-2 px-4 rounded w-full transition-all duration-1000 ease-in-out hover:bg-red-500"
-            onClick={() => {}}
           >
             Cancel
           </button>

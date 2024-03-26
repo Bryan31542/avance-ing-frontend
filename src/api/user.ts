@@ -17,5 +17,8 @@ export const putUser = async (id: string, data: any) =>
 
 export const deleteUser = async (id: string) => axios.delete(`/users/${id}`)
 
+export const addRoleToUser = async (userId: string, roleId: string) =>
+  axios.get(`/users/${userId}/roles/${roleId}`)
+
 export const deleteRoleToUser = async (userId: string, roleId: string) =>
   axios.delete(`/users/${userId}/roles/${roleId}`)
