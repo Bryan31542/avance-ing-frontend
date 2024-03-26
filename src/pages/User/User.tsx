@@ -4,11 +4,13 @@ import { Link } from 'react-router-dom'
 import { Modal, Table } from 'antd'
 import { useRoleStore } from '../../store/role.store'
 import { PencilSquareIcon, BackspaceIcon } from '@heroicons/react/24/outline'
+import { useAuthStore } from '../../store/auth.store'
 
 const User = () => {
   const { users, fetchUsers, deleteUser, removeRoleFromUser, addRoleUser } =
     useUserStore()
   const { roles, fetchRoles } = useRoleStore()
+  const { user } = useAuthStore()
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [selectedRole, setSelectedRole] = useState(null)
   const [selectedUserId, setSelectedUserId] = useState(null)
@@ -24,8 +26,6 @@ const User = () => {
 
   const handleOk = () => {
     setIsModalVisible(false)
-    console.log('Selected Role:', selectedRole)
-    console.log('Selected User:', selectedUserId)
     addRoleUser(selectedUserId ?? '', selectedRole ?? '')
   }
 
@@ -104,8 +104,11 @@ const User = () => {
             </button>
           </Link>
           <button
+            disabled={user === record.key}
             className="rounded-full bg-red-500 w-24 h-10 text-white font-bold"
-            onClick={() => deleteUser(record.key)}
+            onClick={() => {
+              deleteUser(record.key)
+            }}
           >
             Delete
           </button>
