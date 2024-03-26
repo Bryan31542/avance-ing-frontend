@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { addRole, getAllRoles } from '../api/role'
+import { RoleForm } from '../interfaces/role.interface'
 
 export const useRoleStore = create<RoleState>(set => ({
   roles: [],
@@ -11,9 +12,9 @@ export const useRoleStore = create<RoleState>(set => ({
       console.error('Failed to fetch users: ', error)
     }
   },
-  createRole: async (name: string) => {
+  createRole: async (data: RoleForm) => {
     try {
-      const res = await addRole({ name }) // Assuming addRole expects an object with 'name' property
+      const res = await addRole(data) // Assuming addRole expects an object with 'name' property
       console.log(res)
     } catch (error) {
       console.error('Failed to create role: ', error)
@@ -24,5 +25,5 @@ export const useRoleStore = create<RoleState>(set => ({
 interface RoleState {
   roles: []
   fetchRoles: () => Promise<void>
-  createRole: (name: string) => Promise<void>
+  createRole: (data: RoleForm) => Promise<void>
 }

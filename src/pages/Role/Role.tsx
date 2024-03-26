@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { useRoleStore } from '../../store/role.store'
 import RoleCard from '../../components/Role/RoleCard'
 import { Link } from 'react-router-dom'
+import { Role } from '../../interfaces/role.interface'
 
 const Role = () => {
   const { roles, fetchRoles } = useRoleStore()
@@ -22,8 +23,8 @@ const Role = () => {
       </div>
 
       <div className="flex flex-wrap justify-center gap-4">
-        {roles.map((role: any) => (
-          <RoleCard key={role.id} name={role.name} />
+        {roles.map((role: Role) => (
+          <RoleCard role={role} />
         ))}
       </div>
     </div>

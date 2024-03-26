@@ -1,6 +1,7 @@
-import { useForm } from 'react-hook-form'
+import { FieldValues, useForm } from 'react-hook-form'
 import { useRoleStore } from '../../store/role.store'
 import { useNavigate } from 'react-router-dom'
+import { RoleForm } from '../../interfaces/role.interface'
 
 const RoleForm = () => {
   const {
@@ -11,9 +12,9 @@ const RoleForm = () => {
   const { createRole } = useRoleStore()
   const navigate = useNavigate()
 
-  const onSubmit = handleSubmit(async values => {
+  const onSubmit = handleSubmit(async (values: FieldValues) => {
     try {
-      await createRole(values.name)
+      await createRole(values as RoleForm)
       navigate('/roles')
     } catch (error) {
       console.error('Failed to add role: ', error)
