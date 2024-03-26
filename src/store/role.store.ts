@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import { addRole, getAllRoles } from '../api/role'
 import { RoleForm } from '../interfaces/role.interface'
+import { toast } from 'react-toastify'
 
 export const useRoleStore = create<RoleState>(set => ({
   roles: [],
@@ -14,9 +15,10 @@ export const useRoleStore = create<RoleState>(set => ({
   },
   createRole: async (data: RoleForm) => {
     try {
-      const res = await addRole(data) // Assuming addRole expects an object with 'name' property
-      console.log(res)
+      await addRole(data)
+      toast.success('Role created successfully')
     } catch (error) {
+      toast.error('Role not valid')
       console.error('Failed to create role: ', error)
     }
   }

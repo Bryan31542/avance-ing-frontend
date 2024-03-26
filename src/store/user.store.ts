@@ -9,6 +9,7 @@ import {
   putUser
 } from '../api/user'
 import { toast } from 'react-toastify'
+import { User, UserForm } from '../interfaces/user.interface'
 
 export const useUserStore = create<UserState>(set => ({
   users: [],
@@ -40,7 +41,7 @@ export const useUserStore = create<UserState>(set => ({
       console.error('Failed to fetch user: ', error)
     }
   },
-  createUser: async (data: any) => {
+  createUser: async (data: UserForm) => {
     try {
       await addUser(data)
       toast.success('User created successfully')
@@ -48,7 +49,7 @@ export const useUserStore = create<UserState>(set => ({
       console.error('Failed to create user: ', error)
     }
   },
-  updateUser: async (id: string, data: any) => {
+  updateUser: async (id: string, data: UserForm) => {
     try {
       await putUser(id, data)
       toast.success('User updated successfully')
@@ -120,10 +121,10 @@ export const useUserStore = create<UserState>(set => ({
 }))
 
 interface UserState {
-  users: any[]
+  users: User[]
   fetchUsers: (page: number, pageSize: number) => Promise<void>
   createUser: (data: any) => Promise<void>
-  fetchUser: (id: string) => Promise<void>
+  fetchUser: (id: string) => Promise<User>
   updateUser: (id: string, data: any) => Promise<void>
   deleteUser: (id: string) => Promise<void>
   removeRoleFromUser: (userId: string, roleId: string) => Promise<void>

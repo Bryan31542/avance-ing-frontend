@@ -3,6 +3,8 @@ import { useRoleStore } from '../../store/role.store'
 import { useUserStore } from '../../store/user.store'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
+import { User } from '../../interfaces/user.interface'
+import { Role } from '../../interfaces/role.interface'
 
 const Register = () => {
   const {
@@ -21,11 +23,11 @@ const Register = () => {
   useEffect(() => {
     const getUser = async () => {
       const res = await fetchUser(params.id || '')
-      if ((res as any) !== null) {
-        setValue('name', (res as any).name)
-        setValue('username', (res as any).username)
-        setValue('email', (res as any).email)
-        setSelectedRoles((res as any).roles.map((role: any) => role.id))
+      if ((res as User) !== null) {
+        setValue('name', res.name)
+        setValue('username', res.username)
+        setValue('email', res.email)
+        setSelectedRoles(res.roles.map((role: Role) => String(role.id)))
       }
     }
     fetchRoles()
@@ -35,7 +37,6 @@ const Register = () => {
   }, [params.id, fetchUser, setValue, fetchRoles])
 
   const onSubmit = handleSubmit(async values => {
-    console.log('values', values)
     // Convert the selected roles array to the required format
     const rolesArray = selectedRoles.map(roleId => ({ id: roleId }))
     const formattedValues = {
@@ -127,7 +128,7 @@ const Register = () => {
           className="w-full bg-zinc-600 text-white px-4 py-2 rounded-md my-2"
         >
           <option value="">Select Role</option>
-          {roles.map((role: any) => (
+          {roles.map((role: Role) => (
             <option key={role.id} value={role.id}>
               {role.name}
             </option>
@@ -138,15 +139,21 @@ const Register = () => {
         <div>
           <h2 className="my-2">Selected Roles:</h2>
           <ul>
-            {selectedRoles.map((roleId: any) => (
-              <li key={roleId}>
-                {(roles.find((role: any) => role.id === roleId) as any)?.name}
-                {/* Display role name */}
-                <button onClick={() => handleRemoveRole(roleId)}>
-                  <p className="text-red-200 ml-4">Remove</p>
-                </button>
-              </li>
-            ))}
+            {selectedRoles.map((roleId: string) => {
+              const foundRole = roles.find(
+                (role: Role) => String(role.id) === String(roleId)
+              ) as Role | undefined
+              const roleName = foundRole?.name ?? ''
+              return (
+                <li key={roleId}>
+                  {roleName}
+                  {/* Display role name */}
+                  <button onClick={() => handleRemoveRole(roleId)}>
+                    <p className="text-red-200 ml-4">Remove</p>
+                  </button>
+                </li>
+              )
+            })}
           </ul>
         </div>
 
@@ -163,9 +170,7 @@ const Register = () => {
           to="/users"
           className="text-white font-bold block text-center mt-4"
         >
-          <button
-            className="bg-red-700 text-white font-bold py-2 px-4 rounded w-full transition-all duration-1000 ease-in-out hover:bg-red-500"
-          >
+          <button className="bg-red-700 text-white font-bold py-2 px-4 rounded w-full transition-all duration-1000 ease-in-out hover:bg-red-500">
             Cancel
           </button>
         </Link>

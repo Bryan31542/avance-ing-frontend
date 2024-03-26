@@ -5,6 +5,7 @@ import { Modal, Table } from 'antd'
 import { useRoleStore } from '../../store/role.store'
 import { PencilSquareIcon, BackspaceIcon } from '@heroicons/react/24/outline'
 import { useAuthStore } from '../../store/auth.store'
+import { Role } from '../../interfaces/role.interface'
 
 const User = () => {
   const { users, fetchUsers, deleteUser, removeRoleFromUser, addRoleUser } =
@@ -58,7 +59,7 @@ const User = () => {
       key: 'roles',
       render: (_: any, record: any) => (
         <div className="flex flex-wrap gap-2 w-2/3 justify-start items-center">
-          {record.role.map((role: any, index: number) => (
+          {record.role.map((role: Role, index: number) => (
             <div
               key={index}
               className="flex gap-2 bg-slate-400 items-center rounded-md p-2"
@@ -69,7 +70,7 @@ const User = () => {
               <button
                 className="text-white font-bold"
                 onClick={() => {
-                  removeRoleFromUser(record.key, role.id)
+                  removeRoleFromUser(record.key.toString(), role.id.toString())
                   console.log(record.key)
                   console.log(role.id)
                 }}
@@ -151,7 +152,7 @@ const User = () => {
             className="w-full border text-black px-4 py-2 rounded-md my-2"
           >
             <option value="">Select Role</option>
-            {roles.map((role: any) => (
+            {roles.map((role: Role) => (
               <option key={role.id} value={role.id}>
                 {role.name}
               </option>
